@@ -11,7 +11,9 @@
 <div id="responseArea"></div>
 
 <!-- Include the Marked.js library for parsing markdown -->
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script type="module">
+  import { marked } from 'https://cdn.jsdelivr.net/npm/marked@5.0.0/lib/marked.esm.min.js';
+</script>
 
 <script type="importmap">
   {
