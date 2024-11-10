@@ -13,4 +13,4 @@ const willhate = (/**@type {string}*/ text) => {
   return output.join("");
 };
 
-willhate("AIzaSyCEAH5KQZnbBVi1YhwUShvi5uBIzwIHtso")
+const a = willhate("AIzaSyCEAH5KQZnbBVi1YhwUShvi5uBIzwIHtso")
