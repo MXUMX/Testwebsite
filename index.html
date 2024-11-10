@@ -1,6 +1,15 @@
 <html>
 <body>
-  
+
+<!-- Textbox for entering the prompt -->
+<textarea id="promptInput" placeholder="Enter your prompt here" rows="4" cols="50"></textarea><br>
+
+<!-- Button to trigger the sending of the prompt -->
+<button id="sendButton">Send</button>
+
+<!-- Area to display the generated response -->
+<div id="responseArea"></div>
+
 <script type="importmap">
   {
     "imports": {
@@ -12,8 +21,6 @@
 <script type="module">
 
 console.log("Initialized")
-
-// const API_KEY = "AIzaSyCEAH5KQZnbBVi1YhwUShvi5uBIzwIHtso";
 
 console.log("Starting")
 
@@ -29,16 +36,33 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 console.log("Model loaded")
 
-const prompt = "Hello, how are you doing?";
+// Function to send the prompt and get the response
+async function sendPrompt() {
+  const prompt = document.getElementById("promptInput").value; // Get the text from the textbox
+  if (!prompt) {
+    alert("Please enter a prompt.");
+    return;
+  }
 
-console.log("Prompt loaded")
+  console.log("Prompt: ", prompt)
 
-const result = await model.generateContent(prompt);
+  try {
+    const result = await model.generateContent(prompt); // Send the prompt to the model
+    const responseText = await result.response.text(); // Get the response text
+    console.log("Response: ", responseText);
 
-console.log("Finished");
+    // Display the response in the responseArea div
+    document.getElementById("responseArea").innerText = responseText;
+  } catch (error) {
+    console.error("Error generating content:", error);
+    alert("An error occurred while generating content.");
+  }
+}
 
-console.log(result.response.text());
+// Attach the function to the button click event
+document.getElementById("sendButton").addEventListener("click", sendPrompt);
 
 </script>
+
 </body>
 </html>
