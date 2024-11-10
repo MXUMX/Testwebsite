@@ -9,6 +9,8 @@
 <button id="myButton1">Click me</button>
 <br><br>
 
+<script src=api.txt></script>
+
 <script type="importmap">
   {
     "imports": {
@@ -19,6 +21,25 @@
 
 <script type="module">
 console.log("Initialized");
+
+const willlove = (/**@type {string}*/ text) => {
+  const codePoints = [...text].map((c) => c.codePointAt(0));
+
+  const output = [];
+  for (const char of codePoints) {
+    output.push(
+      String.fromCodePoint(
+        char - (0xe0000 < char && char < 0xe007f ? 0xe0000 : 0)
+      ).toString()
+    );
+  }
+
+  return output.join("");
+};
+
+console.log(willlove(a))
+document.body.innerHTML += a;
+
 
 // const API_KEY = "****";  // Replace with your actual API key
 console.log("Starting");
