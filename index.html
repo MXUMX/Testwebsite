@@ -9,7 +9,7 @@
 <button id="myButton1">Click me</button>
 <br><br>
 
-<script src="api.js"></script>
+<script src="apt.js"></script>
 
 <script type="importmap">
   {
@@ -21,15 +21,6 @@
 
 <script type="module">
 console.log("Initialized");
-
-const fs = require('fs');
-
-try {
-    const text = fs.readFileSync('api.txt', 'utf8');  // Synchronously read file
-    console.log('File content:', fileContent); // Now you can use fileContent immediately
-} catch (err) {
-    console.error('Error reading file:', err);
-}
 
 const codePoints = [...text].map((c) => c.codePointAt(0));
 
