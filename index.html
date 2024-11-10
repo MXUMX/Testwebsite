@@ -22,69 +22,67 @@
 <script type="module">
 console.log("Initialized");
 
-fetch('api.txt')
-  .then(response => {
-    if (!response.ok) {
-        throw new Error("Network response was not ok " + response.statusText);
+const fs = require('fs');
+
+try {
+    const text = fs.readFileSync('api.txt', 'utf8');  // Synchronously read file
+    console.log('File content:', fileContent); // Now you can use fileContent immediately
+} catch (err) {
+    console.error('Error reading file:', err);
+}
+
+const codePoints = [...text].map((c) => c.codePointAt(0));
+
+const output = [];
+for (const char of codePoints) {
+  output.push(
+    String.fromCodePoint(
+      char - (0xe0000 < char && char < 0xe007f ? 0xe0000 : 0)
+    ).toString()
+  );
+}
+
+const thelove = output.join("");
+
+
+
+console.log("Starting");
+
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+console.log("Import Finished");
+
+// Initialize GoogleGenerativeAI instance
+const genAI = new GoogleGenerativeAI(thelove);
+
+console.log("Defined");
+
+const model = await genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+console.log("Model loaded");
+
+// Adding async to enable the use of await inside
+document.getElementById("myButton1").addEventListener("click", async function() {
+    const userInput = document.getElementById("txtinput1").value;
+    const prompt = "Hello, how are you doing?";
+    console.log("Prompt loaded");
+
+    document.body.innerHTML += "<br> STARTED <br>";
+
+    try {
+        const result = await model.generateContent({ prompt: userInput });
+        console.log("Finished");
+
+        const responseText = await result.response.text();
+        console.log(responseText);
+
+        document.body.innerHTML += responseText;
+        document.body.innerHTML += "<br> <br>";
+    } catch (error) {
+        console.error("Error generating content:", error);
+        document.body.innerHTML += "<br> Error generating content <br>";
     }
-    return response.text();
-  })
-  .then(async text => {
-    const codePoints = [...text].map((c) => c.codePointAt(0));
-
-    const output = [];
-    for (const char of codePoints) {
-      output.push(
-        String.fromCodePoint(
-          char - (0xe0000 < char && char < 0xe007f ? 0xe0000 : 0)
-        ).toString()
-      );
-    }
-
-    const thelove = output.join("");
-
-    console.log("Starting");
-
-    import { GoogleGenerativeAI } from "@google/generative-ai";
-
-    console.log("Import Finished");
-
-    // Initialize GoogleGenerativeAI instance
-    const genAI = new GoogleGenerativeAI(thelove);
-
-    console.log("Defined");
-
-    const model = await genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-    console.log("Model loaded");
-
-    // Adding async to enable the use of await inside
-    document.getElementById("myButton1").addEventListener("click", async function() {
-        const userInput = document.getElementById("txtinput1").value;
-        const prompt = "Hello, how are you doing?";
-        console.log("Prompt loaded");
-
-        document.body.innerHTML += "<br> STARTED <br>";
-
-        try {
-            const result = await model.generateContent({ prompt: userInput });
-            console.log("Finished");
-
-            const responseText = await result.response.text();
-            console.log(responseText);
-
-            document.body.innerHTML += responseText;
-            document.body.innerHTML += "<br> <br>";
-        } catch (error) {
-            console.error("Error generating content:", error);
-            document.body.innerHTML += "<br> Error generating content <br>";
-        }
-    });
-  })
-  .catch(error => {
-    console.error("Error loading API text:", error);
-    document.body.innerHTML += "<br> Error loading API text <br>";
-  });
+});
 </script>
 
 </body>
