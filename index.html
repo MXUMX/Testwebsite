@@ -10,6 +10,9 @@
 <!-- Area to display the generated response -->
 <div id="responseArea"></div>
 
+<!-- Include the Marked.js library for parsing markdown -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 <script type="importmap">
   {
     "imports": {
@@ -51,8 +54,11 @@ async function sendPrompt() {
     const responseText = await result.response.text(); // Get the response text
     console.log("Response: ", responseText);
 
-    // Display the response in the responseArea div
-    document.getElementById("responseArea").innerText = responseText;
+    // Convert the Markdown to HTML using marked.js
+    const htmlContent = marked(responseText);
+
+    // Display the HTML in the responseArea div
+    document.getElementById("responseArea").innerHTML = htmlContent;
   } catch (error) {
     console.error("Error generating content:", error);
     alert("An error occurred while generating content.");
