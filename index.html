@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <body>
 
 <form>
@@ -6,8 +7,7 @@
   <input type="text" id="txtinput1" name="textbox1"><br>
 </form>
 <button id="myButton1">Click me</button>
-<br>
-<br>
+<br><br>
 
 <script type="importmap">
   {
@@ -18,48 +18,46 @@
 </script>
 
 <script type="module">
+console.log("Initialized");
 
-console.log("Initialized")
-
-// const API_KEY = "AIzaSyCEAH5KQZnbBVi1YhwUShvi5uBIzwIHtso";
-
-console.log("Starting")
+// const API_KEY = "****";  // Replace with your actual API key
+console.log("Starting");
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-console.log("Import Finished")
+console.log("Import Finished");
 
+// Initialize GoogleGenerativeAI instance
 const genAI = new GoogleGenerativeAI("AIzaSyCEAH5KQZnbBVi1YhwUShvi5uBIzwIHtso");
 
-console.log("Defined")
+console.log("Defined");
 
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = await genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-console.log("Model loaded")
+console.log("Model loaded");
 
-document.getElementById("myButton1").addEventListener("click", function() {
-  
-  const userInput = document.getElementById("txtinput1").value
-  const prompt = "Hello, how are you doing?";
-  
-  console.log("Prompt loaded")
+// Adding async to enable the use of await inside
+document.getElementById("myButton1").addEventListener("click", async function() {
+    const userInput = document.getElementById("txtinput1").value;
+    const prompt = "Hello, how are you doing?";
+    console.log("Prompt loaded");
 
-  document.body.innerHTML += "<br> STARTED <br>";
-  
-  const result = await model.generateContent(userInput);
-  
-  console.log("Finished");
-  
-  console.log(result.response.text());
-  
-  document.body.innerHTML += result.response.text();
-  
-  document.body.innerHTML += "<br> <br>"
+    document.body.innerHTML += "<br> STARTED <br>";
+
+    try {
+        const result = await model.generateContent({ prompt: userInput });
+        console.log("Finished");
+
+        const responseText = await result.response.text();
+        console.log(responseText);
+
+        document.body.innerHTML += responseText;
+        document.body.innerHTML += "<br> <br>";
+    } catch (error) {
+        console.error("Error generating content:", error);
+        document.body.innerHTML += "<br> Error generating content <br>";
+    }
 });
-
-</script>
-
-<script>
 </script>
 
 </body>
