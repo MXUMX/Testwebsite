@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <body>
-
-<form>
-  <label for="textinput1">Text input:</label><br>
-  <input type="text" id="txtinput1" name="textbox1"><br>
-</form>
-
-<button id="myButton1">Click me</button>
-<br><br>
-
-<input type="file" id="fileInput">
-
+  
 <script type="importmap">
   {
     "imports": {
@@ -21,85 +10,35 @@
 </script>
 
 <script type="module">
-console.log("Initialized");
 
-// Initialize a variable to store the file content
-let fileContent = '';
+console.log("Initialized")
 
-// File reader code from apt.js (file handling)
-document.getElementById("fileInput").addEventListener("change", function(event) {
-    const file = event.target.files[0];  // Get the file
-    if (file) {
-        const reader = new FileReader();
+// const API_KEY = "AIzaSyCEAH5KQZnbBVi1YhwUShvi5uBIzwIHtso";
 
-        reader.onload = function(e) {
-            fileContent = e.target.result;  // Store file content
-            console.log("File content read:", fileContent);
-        };
-
-        reader.onerror = function() {
-            console.error("Error reading file.");
-        };
-
-        reader.readAsText(file);  // Read the file as text
-    }
-});
-
-console.log("Starting");
+console.log("Starting")
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-console.log("Import Finished");
+console.log("Import Finished")
 
-(async () => {
-  // Initialize GoogleGenerativeAI instance with processed content
-  const genAI = new GoogleGenerativeAI(fileContent);
-  console.log("Defined");
+const genAI = new GoogleGenerativeAI("AIzaSyCEAH5KQZnbBVi1YhwUShvi5uBIzwIHtso");
 
-  const model = await genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-  console.log("Model loaded");
+console.log("Defined")
 
-  // Adding async to enable the use of await inside
-  document.getElementById("myButton1").addEventListener("click", async function() {
-      const userInput = document.getElementById("txtinput1").value;
-      const prompt = "Hello, how are you doing?";
-      console.log("Prompt loaded");
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      // Instead of using innerHTML, append text directly
-      const resultDiv = document.createElement('div');
-      resultDiv.textContent = "STARTED";
-      document.body.appendChild(resultDiv);
+console.log("Model loaded")
 
-      try {
-          // Ensure the file has been read before proceeding
-          if (!fileContent) {
-            console.log("File content not loaded yet");
-            return;
-          }
+const prompt = "Hello, how are you doing?";
 
-          const result = await model.generateContent({ prompt: userInput });
-          console.log("Finished");
+console.log("Prompt loaded")
 
-          const responseText = await result.response.text();
-          console.log(responseText);
+const result = await model.generateContent(prompt);
 
-          // Append the response text to the DOM directly
-          const responseDiv = document.createElement('div');
-          responseDiv.textContent = responseText;
-          document.body.appendChild(responseDiv);
+console.log("Finished");
 
-          const newLineDiv = document.createElement('div');
-          newLineDiv.textContent = "<br><br>";
-          document.body.appendChild(newLineDiv);
-      } catch (error) {
-          console.error("Error generating content:", error);
-          const errorDiv = document.createElement('div');
-          errorDiv.textContent = "Error generating content";
-          document.body.appendChild(errorDiv);
-      }
-  });
-})();
+console.log(result.response.text());
+
 </script>
-
 </body>
 </html>
