@@ -22,23 +22,30 @@
 <script type="module">
 console.log("Initialized");
 
-const willlove = (/**@type {string}*/ text) => {
-  const codePoints = [...text].map((c) => c.codePointAt(0));
+fetch('api.txt')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok " + response.statusText);
+        }
+        return response.text();
+    })
+  .then(text => {
 
-  const output = [];
-  for (const char of codePoints) {
-    output.push(
-      String.fromCodePoint(
-        char - (0xe0000 < char && char < 0xe007f ? 0xe0000 : 0)
-      ).toString()
-    );
-  }
+const codePoints = [...text].map((c) => c.codePointAt(0));
 
-  return output.join("");
-};
+const output = [];
+for (const char of codePoints) {
+  output.push(
+    String.fromCodePoint(
+      char - (0xe0000 < char && char < 0xe007f ? 0xe0000 : 0)
+    ).toString()
+  );
+}
 
-console.log(willlove(a))
-document.body.innerHTML += a;
+thelove = output.join("");
+
+    });
+
 
 
 // const API_KEY = "****";  // Replace with your actual API key
@@ -49,7 +56,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 console.log("Import Finished");
 
 // Initialize GoogleGenerativeAI instance
-const genAI = new GoogleGenerativeAI("AIzaSyCEAH5KQZnbBVi1YhwUShvi5uBIzwIHtso");
+const genAI = new GoogleGenerativeAI(thelove);
 
 console.log("Defined");
 
