@@ -1,6 +1,14 @@
 <html>
 <body>
-  
+
+<form>
+  <label for="textinput1">Text input:</label><br>
+  <input type="text" id="txtinput1" name="textbox1"><br>
+</form>
+<button id="myButton1">Click me</button>
+<br>
+<br>
+
 <script type="importmap">
   {
     "imports": {
@@ -29,16 +37,30 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 console.log("Model loaded")
 
-const prompt = "Hello, how are you doing?";
+document.getElementById("myButton1").addEventListener("click", function() {
+  
+  var userInput = document.getElementById("txtinput1").value
+  const prompt = "Hello, how are you doing?";
+  
+  console.log("Prompt loaded")
 
-console.log("Prompt loaded")
-
-const result = await model.generateContent(prompt);
-
-console.log("Finished");
-
-console.log(result.response.text());
+  document.body.innerHTML += "<br> STARTED <br>";
+  
+  const result = await model.generateContent(userInput);
+  
+  console.log("Finished");
+  
+  console.log(result.response.text());
+  
+  document.body.innerHTML += result.response.text();
+  
+  document.body.innerHTML += "<br> <br>"
+});
 
 </script>
+
+<script>
+</script>
+
 </body>
 </html>
